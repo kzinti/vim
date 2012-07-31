@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/media/New Volume/workspace/ebook/ebook/config'
-let g:netrw_dirhist_2='/media/New Volume/workspace/ebook/ebook/config/deploy'
-let g:netrw_dirhist_3='/media/New Volume/workspace/ebook/ebook/config'
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/me/.rvm/gems/ruby-1.9.3-p0/gems/chef-10.12.0'
+let g:netrw_dirhist_2='/home/me/.rvm/gems/ruby-1.9.3-p0/gems/chef-10.12.0/lib'
+let g:netrw_dirhist_3='/home/me/.rvm/gems/ruby-1.9.3-p0/gems/chef-10.12.0/lib/chef'
+let g:netrw_dirhist_4='/home/me/.rvm/gems/ruby-1.9.3-p0/gems/chef-10.12.0/lib/chef/application'
