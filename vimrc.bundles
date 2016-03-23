@@ -1,0 +1,257 @@
+"
+" :so % to refresh .vimrc after making changes
+" :PluginInstall to install new stuff
+" :PluginUpdate to update to latest versions
+"
+
+if &compatible
+  set nocompatible
+end
+
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+Plugin 'L9'
+" Git plugin not hosted on GitHub
+Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+"Plugin 'ascenator/L9', {'name': 'newL9'}
+
+""" Theme / Pretty stuff
+"""
+" [1]
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'endel/vim-github-colorscheme'
+" Awesome looking meta at bottom
+" Fugitive will help with git related stuff, and show branch on statusline
+Plugin 'tpope/vim-fugitive' | Plugin 'bling/vim-airline'
+""
+
+""" Some ESSENTIAL IDE like plugins for Vim
+"""
+" [2] File tree viewer
+Plugin 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+
+" [3]
+" Several plugins to help work with Tmux
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'https://github.com/christoomey/vim-tmux-runner'
+Plugin 'christoomey/vim-run-interactive'
+
+" [4] search filesystem with ctrl+p
+Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" [5] Code highlighting and linting
+Plugin 'scrooloose/syntastic' "Run linters and display errors etc
+" Plugin 'benekastah/neomake' "Async Jobs (can use it instead of syntastic, but hard to setup)
+Plugin 'pangloss/vim-javascript' | Plugin 'mxw/vim-jsx'
+Plugin 'jimmyhchan/dustjs.vim' "Highlighting for Dust
+Plugin 'elmcast/elm-vim' "Highlighting for Elm
+
+" [6] Adds a ; at the end of a line by pressing <leader> ;
+Plugin 'lfilho/cosco.vim'
+
+Plugin 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
+Plugin 'vim-scripts/HTML-AutoCloseTag' "close tags after >
+Plugin 'vim-scripts/tComment' "Comment easily with gcc
+Plugin 'tpope/vim-repeat' "allow plugins to utilize . command
+Plugin 'tpope/vim-surround' "easily surround things...just read docs for info
+Plugin 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
+Plugin 'duff/vim-scratch' "Open a throwaway scratch buffer
+""
+
+""" Utilities / Extras / Etc
+"""
+" [7] Make gists of current buffer
+" View (https://github.com/mattn/gist-vim) for setup instructions
+Plugin 'mattn/webapi-vim' | Plugin 'mattn/gist-vim'
+
+" [8] Diary, notes, whatever. It's amazing
+Plugin 'vimwiki/vimwiki'
+
+" Opens a browser to preview markdown files
+Plugin 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d'}
+""
+
+" [9]
+Plugin 'SirVer/ultisnips' | Plugin 'justinj/vim-react-snippets' | Plugin 'colbycheeze/vim-snippets'
+
+" [10]
+" supertab makes tab work with autocomplete and ultisnips
+Plugin 'ervandew/supertab'
+" Provides Async autocomplete with Tern
+Plugin 'https://github.com/Shougo/deoplete.nvim'
+" IDE like code intelligence for Javascript
+Plugin 'ternjs/tern_for_vim', {'do': 'npm install'}
+
+" Reads any .editorconfig files and sets spacing etc automatically
+Plugin 'editorconfig/editorconfig-vim'
+
+
+""" TODO / Pluginins to evaluate
+" Figure out how to change matchit to ALSO use <tab>
+" Plugin 'junegunn/vim-easy-align'
+call vundle#end()
+
+"""" PLUGIN RELATED TWEAKS
+""
+"
+
+" [1]
+" Color scheme
+syntax enable
+" let g:solarized_termcolors=16
+let g:solarized_termcolors=256
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+let g:colarized_termtrans = 1
+set background=dark
+colorscheme solarized
+" Allow powerline symbols to show up
+let g:airline_powerline_fonts = 1
+
+" [2]
+map <silent> <C-n> :NERDTreeToggle<cr>
+nnoremap <C-t> :call ToggleRelativeOn()<cr>
+" Close vim if only NERDTree is open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" [3]
+" Allow moving around between Tmux windows
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+let g:tmux_navigator_no_mappings = 1
+let g:tmux_navigator_save_on_switch = 1
+"
+"Open a tmux pane with Node
+nnoremap <leader>node :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'node'}<cr>
+
+" [4]
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_working_path_mode = 'r'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+
+  let g:ctrlp_extensions = ['line']
+endif
+
+" [5]
+" Setup for NEOMAKE plugin ~~~~~~~
+" let g:neomake_scss_csslint_maker = ['sass-lint']
+" let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_open_list = 0
+" let g:neomake_warning_sign = {
+"       \ 'texthl': 'WarningMsg',
+"       \ }
+"
+" let g:neomake_error_sign = {
+"       \ 'texthl': 'ErrorMsg',
+"       \ }
+" autocmd! BufWritePost,BufEnter * Neomake
+"       ~~~~~~~~~~~~~~~~
+" configure syntastic syntax checking to check on open as well as save
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript'], 'passive_filetypes': [] }
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" " Syntastic will search for an .eslintrc in your project, otherwise it defaults
+autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['standard']
+" these 2 lines check to see if eslint is installed via local npm and runs that before going global
+let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
+let b:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+" " Allow highlighting of HTML within Javascript (for React)
+let g:javascript_enable_domhtmlcss = 1
+let g:jsx_ext_required = 0
+
+" [6] Key mapping for Cosco.vim - space + ; to add semicolon or comma in Javascript or CSS
+autocmd FileType javascript,css nnoremap <silent> <Leader>; :call cosco#commaOrSemiColon()<CR>
+autocmd FileType javascript,css inoremap <silent> <Leader>; <c-o>:call cosco#commaOrSemiColon()<CR>
+
+" [7] Gist setup
+let g:gist_clip_command = 'pbcopy' "Using Gist will copy URL to clipboard automatically
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+
+" [8] Set Vim Wiki to my Dropbox directory
+let g:vimwiki_list = [{'path':'$HOME/Dropbox/vimwiki'}]
+
+" [9]
+" Set ultisnips triggers
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
+" [10] make YCM compatible with UltiSnips (using supertab)
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+let g:deoplete#enable_at_startup = 1
+"if !exists('g:deoplete#omni#input_patterns')
+  "let g:deoplete#omni#input_patterns = {}
+"endif
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" omnifuncs
+augroup omnifuncs
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup end
+
+" tern
+if exists('g:plugs["tern_for_vim"]')
+  let g:tern_show_argument_hints = 'on_hold'
+  let g:tern_show_signature_in_pum = 1
+  let g:tern_map_keys = 1
+
+  autocmd FileType javascript setlocal omnifunc=tern#Complete
+endif
+
+"set up path to editorconfig
+let g:EditorConfig_exec_path = findfile('.editorconfig', '.;')
+
+" Not sure what the below code does...look into Tern docs etc and figure it out?
+" Found this snippet on a forum post that says it gets everything working
+" https://github.com/Valloric/YouCompleteMe/issues/570
+" autocmd FileType javascript setlocal omnifunc=tern#Complete
+
+" " Run commands that require an interactive shell
+" nnoremap <Leader>r :RunInInteractiveShell<space>
+"
