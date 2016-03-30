@@ -177,4 +177,9 @@ autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 " For the MakeGreen plugin and Ruby RSpec. Uncomment to use.
 autocmd BufNewFile,BufRead *_spec.rb compiler rspec
 
+" CtrlP aliases
+" Open File Menu
+nnoremap <leader>o :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>f :CtrlPMRUFiles<CR>
 
