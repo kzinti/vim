@@ -34,7 +34,7 @@ filetype plugin indent on         " Turn on file type detection.
 
 runtime macros/matchit.vim        " Load the matchit plugin.
 
-set timeout timeoutlen=3000 ttimeoutlen=1000
+set timeout timeoutlen=3001 ttimeoutlen=1000
 set showcmd
 
 set mousehide                     " Hide mouse after chars typed
@@ -51,8 +51,6 @@ set wildmode=list:longest         " Complete files like a shell.
 
 set number                        " Show line numbers.
 set numberwidth=5
-set ruler                         " Show cursor position.
-
 set incsearch                     " Highlight matches as you type.
 set hlsearch                      " Highlight matches.
 
@@ -66,6 +64,8 @@ set visualbell                    " No beeping.
 set nobackup                      " Don't make a backup before overwriting a file.
 set nowritebackup                 " And again.
 set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
+
+set pastetoggle=<F2>
 
 " Make searching better
 set gdefault      " Never have to type /g at the end of search / replace again
@@ -159,6 +159,25 @@ map <leader>tp :tabprevious<cr>
 map <leader>tf :tabfirst<cr>
 map <leader>tl :tablast<cr>
 map <leader>tm :tabmove
+
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+" <c-h> is interpreted as <bs> in neovim
+" This is a bandaid fix until the team decides how
+" they want to handle fixing it...(https://github.com/neovim/neovim/issues/2048)
+nnoremap <silent> <bs> :TmuxNavigateLeft<cr>
+
+" Navigate properly when lines are wrapped
+nnoremap j gj
+nnoremap k gk
+
+" Use tab to jump between blocks, because it's easier
+nnoremap <tab> %
+vnoremap <tab> %
 
 " Uncomment to use Jamis Buck's file opening plugin
 "map <Leader>t :FuzzyFinderTextMate<Enter>
