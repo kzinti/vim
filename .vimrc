@@ -110,9 +110,8 @@ call vundle#end()
 ""
 "
 
-" [2]
 "map <silent> <C-m> :NERDTreeToggle<cr>
-map <leader>n :NERDTreeToggle<cr>
+noremap <leader>d :NERDTreeToggle<cr>
 nnoremap <C-t> :call ToggleRelativeOn()<cr>
 " Close vim if only NERDTree is open
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
