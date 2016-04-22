@@ -111,10 +111,10 @@ call vundle#end()
 "
 
 "map <silent> <C-m> :NERDTreeToggle<cr>
-noremap <leader>d :NERDTreeToggle<cr>
+noremap <F4> :NERDTreeToggle<CR>
 nnoremap <C-t> :call ToggleRelativeOn()<cr>
 " Close vim if only NERDTree is open
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " [3]
 " Allow moving around between Tmux windows
